@@ -7,3 +7,33 @@ datasource db {
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
+
+model Star {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String   @db.VarChar(255)
+  constellation String   @db.VarChar(255)
+}
+
+model Bookmark {
+  id           Int      @id @unique @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String   @db.VarChar(255)
+  originalName String   @db.VarChar(255)
+  url          String   @db.VarChar(255)
+  description  String   @db.VarChar(255)
+  tags         Tag[]
+}
+
+model Tag {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  name       String   @db.VarChar(255)
+  Bookmark   Bookmark @relation(fields: [bookmarkId], references: [id])
+  bookmarkId Int
+
+  @@index([bookmarkId])
+}
