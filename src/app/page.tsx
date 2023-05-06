@@ -1,7 +1,7 @@
-import { PlusIcon } from 'lucide-react';
+import Image from 'next/image';
 import PageLayout from '@/components/page-layout';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import UrlInput from '@/components/url-input';
 
 type ListItemProps = {
   children?: React.ReactNode;
@@ -14,9 +14,19 @@ type ListItemProps = {
 function ListItem({ title, domain, url, image, children }: ListItemProps) {
   return (
     <li className="py-2">
-      <a href={url} target="__blank" className="text-primary">
+      <a
+        href={url}
+        target="__blank"
+        className="text-primary flex items-center gap-2"
+      >
+        <Image
+          alt="Favicon"
+          src={`https://www.google.com/s2/favicons?domain=${domain}`}
+          width="16"
+          height="16"
+        />
         {title}
-        <span className="text-muted-foreground ml-2 text-sm">{domain}</span>
+        <span className="text-muted-foreground text-sm">{domain}</span>
       </a>
     </li>
   );
@@ -25,11 +35,9 @@ function ListItem({ title, domain, url, image, children }: ListItemProps) {
 export default function Home() {
   return (
     <PageLayout>
-      <Input
-        placeholder="Add link here"
-        type="url"
-        className="shadow-md mb-3 md:mb-5"
-      />
+      <div className="mb-3 md:mb-5">
+        <UrlInput />
+      </div>
       <div className="space-y-2">
         <h2 className="text-muted-foreground">Title</h2>
         <Separator />
