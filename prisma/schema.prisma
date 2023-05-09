@@ -8,39 +8,29 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Star {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  name          String   @db.VarChar(255)
-  constellation String   @db.VarChar(255)
-}
-
 model Bookmark {
-  id           Int      @id @unique @default(autoincrement())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String   @db.VarChar(255)
-  originalName String   @db.VarChar(255)
-  url          String   @db.VarChar(255)
-  description  String   @db.VarChar(255)
-  tags         Tag[]
-  group        Group?   @relation(fields: [groupId], references: [id])
-  groupId      Int?
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String?  @db.VarChar(255)
+  url       String   @db.VarChar(255)
+  hostname  String   @db.Text
+  group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   Int
 
   @@index([groupId])
 }
 
-model Tag {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  name       String   @db.VarChar(255)
-  Bookmark   Bookmark @relation(fields: [bookmarkId], references: [id])
-  bookmarkId Int
+// model Tag {
+//   id         Int      @id @default(autoincrement())
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+//   name       String   @db.VarChar(255)
+//   Bookmark   Bookmark @relation(fields: [bookmarkId], references: [id])
+//   bookmarkId Int
 
-  @@index([bookmarkId])
-}
+//   @@index([bookmarkId])
+// }
 
 model Group {
   id        Int        @id @default(autoincrement())

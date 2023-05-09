@@ -58,9 +58,6 @@ export default function Header() {
                 <DropdownMenuItem className="flex items-center justify-between gap-2">
                   Reddit <Badge>3</Badge>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center justify-between gap-2">
-                  Böcker <Badge>1</Badge>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="flex gap-2 items-center">
                   <PlusIcon className="h-3 w-3" /> New Group
