@@ -9,14 +9,19 @@ datasource db {
 }
 
 model Bookmark {
-  id        Int      @id @unique @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String?  @db.VarChar(255)
-  url       String   @db.VarChar(255)
-  hostname  String   @db.Text
-  group     Group?   @relation(fields: [groupId], references: [id])
-  groupId   Int
+  id          Int      @id @unique @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String?  @db.VarChar(255)
+  url         String   @db.VarChar(255)
+  groupId     Int
+  group       Group?   @relation(fields: [groupId], references: [id])
+  hostname    String   @db.Text
+  description String?  @db.Text
+  siteName    String?  @db.Text
+  image       String?  @db.Text
+  icon        String?  @db.Text
+  keywords    String?  @db.Text
 
   @@index([groupId])
 }

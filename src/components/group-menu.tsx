@@ -159,7 +159,7 @@ export default function GroupMenu({
               <DropdownMenuItem key={group.id} asChild>
                 <Link
                   className="flex items-center justify-between gap-2"
-                  href={`/groups/${group.id}`}
+                  href={`/group/${group.id}`}
                 >
                   {selectedGroup?.id === group.id ? (
                     <>
@@ -191,8 +191,8 @@ export default function GroupMenu({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]">
+          <form onSubmit={handleSubmit(onSubmit)} className="grid w-full gap-4">
             <DialogHeader>
               <DialogTitle>Add new Group</DialogTitle>
               <DialogDescription>
@@ -204,9 +204,7 @@ export default function GroupMenu({
               <Label htmlFor="name">Name</Label>
               <Input id="name" {...register('name')} autoComplete="off" />
               {errors.name && (
-                <p className="text-xs italic text-red-500">
-                  {errors.name?.message}
-                </p>
+                <p className="text-xs text-red-500">{errors.name?.message}</p>
               )}
             </div>
             <DialogFooter>
@@ -222,8 +220,8 @@ export default function GroupMenu({
                 )}
               </Button>
             </DialogFooter>
-          </DialogContent>
-        </form>
+          </form>
+        </DialogContent>
       </Dialog>
       <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>

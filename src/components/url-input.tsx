@@ -6,25 +6,23 @@ import { Input } from '@/components/ui/input';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from './ui/spinner';
 import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   url: z.string().url(),
-  groupId: z.string(),
 });
 
 type Inputs = z.infer<typeof schema>;
 
-export default function UrlInput() {
+export default function UrlInput({ groupId }: { groupId: number }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    control,
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
   });
@@ -34,7 +32,7 @@ export default function UrlInput() {
     try {
       const data = {
         ...input,
-        groupId: Number(input.groupId),
+        groupId,
       };
 
       const response = await fetch('/api/bookmark', {
