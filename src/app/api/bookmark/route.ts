@@ -17,6 +17,7 @@ export async function POST(request: Request) {
         url: body.url,
         groupId: body.groupId,
         hostname: url.hostname,
+        name: url.href,
       },
     });
 
