@@ -1,28 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import Spinner from './ui/spinner';
 import { useRouter } from 'next/navigation';
-
-type UrlInputProps = {
-  groups: Array<{ id: number; name: string }>;
-};
 
 const schema = z.object({
   url: z.string().url(),
@@ -31,7 +17,7 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-export default function UrlInput({ groups }: UrlInputProps) {
+export default function UrlInput() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {

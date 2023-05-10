@@ -1,7 +1,10 @@
+'use client';
+
 import { BookmarkIcon } from 'lucide-react';
 import { Separator } from './ui/separator';
 import GroupMenu from './group-menu';
 import { Prisma } from '@prisma/client';
+import { useParams } from 'next/navigation';
 
 type GroupWithCount = Prisma.GroupGetPayload<{
   include: {
@@ -10,6 +13,11 @@ type GroupWithCount = Prisma.GroupGetPayload<{
 }>;
 
 export default function Header({ groups }: { groups: Array<GroupWithCount> }) {
+  const params = useParams();
+  const selectedGroup = groups.find(
+    (group) => String(group.id) === params.groupId
+  );
+
   return (
     <nav className="w-full h-[68px]">
       <div className="flex gap-4 mx-auto max-w-7xl p-4 sm:px-6 lg:px-8">
@@ -21,9 +29,12 @@ export default function Header({ groups }: { groups: Array<GroupWithCount> }) {
           <h2 className="font-black">Bookmarked</h2>
         </div>
         <Separator orientation="vertical" />
-        <ul className="">
+        <ul>
           <li className="px-3 py-2 text-sm font-medium">
-            <GroupMenu groups={groups} />
+            <GroupMenu
+              groups={groups}
+              selectedGroup={selectedGroup ?? groups[0]}
+            />
           </li>
         </ul>
       </div>

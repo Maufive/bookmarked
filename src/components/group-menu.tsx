@@ -13,6 +13,7 @@ import {
   TrashIcon,
   Plus,
   Loader2,
+  CheckIcon,
 } from 'lucide-react';
 import {
   Dialog,
@@ -44,6 +45,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from './ui/alert-dialog';
+import Link from 'next/link';
 
 type FormData = z.infer<typeof groupCreateSchema>;
 type GroupWithCount = Prisma.GroupGetPayload<{
@@ -74,8 +76,10 @@ function Badge({ children }: BadgeProps) {
 
 export default function GroupMenu({
   groups,
+  selectedGroup,
 }: {
   groups: Array<GroupWithCount>;
+  selectedGroup: GroupWithCount;
 }) {
   const {
     register,
@@ -127,15 +131,25 @@ export default function GroupMenu({
       <Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger className="flex gap-2 items-center text-secondary-foreground">
-            Recept <ChevronsUpDownIcon className="h-3 w-3" />
+            {selectedGroup.name} <ChevronsUpDownIcon className="h-3 w-3" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[175px]">
             {groups.map((group) => (
-              <DropdownMenuItem
-                key={group.id}
-                className="flex items-center justify-between gap-2"
-              >
-                {group.name} <Badge>{group._count.bookmarks}</Badge>
+              <DropdownMenuItem key={group.id} asChild>
+                <Link
+                  className="flex items-center justify-between gap-2"
+                  href={`/groups/${group.id}`}
+                >
+                  {selectedGroup.id === group.id ? (
+                    <>
+                      {group.name} <CheckIcon className="h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      {group.name} <Badge>{group._count.bookmarks}</Badge>
+                    </>
+                  )}
+                </Link>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
