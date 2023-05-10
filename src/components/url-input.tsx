@@ -84,29 +84,6 @@ export default function UrlInput({ groups }: UrlInputProps) {
           id="url"
           {...register('url')}
         />
-        <Controller
-          control={control}
-          name="groupId"
-          render={({ field }) => {
-            return (
-              <Select onValueChange={field.onChange} {...field}>
-                <SelectTrigger className="w-[250px]">
-                  <SelectValue placeholder="Add to Group" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Groups</SelectLabel>
-                    {groups.map((group) => (
-                      <SelectItem key={group.id} value={String(group.id)}>
-                        {group.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            );
-          }}
-        />
         <Button type="submit" disabled={isSubmitDisabled}>
           {isLoading ? (
             <>
