@@ -47,6 +47,8 @@ import {
 } from './ui/alert-dialog';
 import Link from 'next/link';
 
+const ALL_BOOKMARKS_TITLE = 'All bookmarks';
+
 type FormData = z.infer<typeof groupCreateSchema>;
 type GroupWithCount = Prisma.GroupGetPayload<{
   include: {
@@ -79,7 +81,7 @@ export default function GroupMenu({
   selectedGroup,
 }: {
   groups: Array<GroupWithCount>;
-  selectedGroup: GroupWithCount;
+  selectedGroup?: GroupWithCount;
 }) {
   const {
     register,
@@ -93,6 +95,10 @@ export default function GroupMenu({
   const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const isSubmitDisabled = isSaving || !isValid;
+  const totalBookmarkCount = groups.reduce(
+    (total, group) => total + group._count.bookmarks,
+    0
+  );
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
@@ -124,23 +130,38 @@ export default function GroupMenu({
     // });
   }
 
-  console.log(errors);
-
   return (
     <>
       <Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger className="flex gap-2 items-center text-secondary-foreground">
-            {selectedGroup.name} <ChevronsUpDownIcon className="h-3 w-3" />
+            {selectedGroup?.name ?? ALL_BOOKMARKS_TITLE}
+            <ChevronsUpDownIcon className="h-3 w-3" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[175px]">
+            <DropdownMenuItem asChild>
+              <Link
+                className="flex items-center justify-between gap-2"
+                href={`/`}
+              >
+                {!selectedGroup ? (
+                  <>
+                    {ALL_BOOKMARKS_TITLE} <CheckIcon className="h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    {ALL_BOOKMARKS_TITLE} <Badge>{totalBookmarkCount}</Badge>
+                  </>
+                )}
+              </Link>
+            </DropdownMenuItem>
             {groups.map((group) => (
               <DropdownMenuItem key={group.id} asChild>
                 <Link
                   className="flex items-center justify-between gap-2"
                   href={`/groups/${group.id}`}
                 >
-                  {selectedGroup.id === group.id ? (
+                  {selectedGroup?.id === group.id ? (
                     <>
                       {group.name} <CheckIcon className="h-4 w-4" />
                     </>
@@ -164,6 +185,7 @@ export default function GroupMenu({
             <DropdownMenuItem
               className="flex cursor-pointer items-center gap-2"
               onSelect={() => setShowDeleteAlert(true)}
+              disabled={!selectedGroup}
             >
               <TrashIcon className="h-3 w-3" /> Delete Group
             </DropdownMenuItem>
@@ -207,7 +229,7 @@ export default function GroupMenu({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete {selectedGroup.name} ?
+              Are you sure you want to delete {selectedGroup?.name} ?
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone.
@@ -217,6 +239,10 @@ export default function GroupMenu({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={async (event) => {
+                if (!selectedGroup) {
+                  return;
+                }
+
                 event.preventDefault();
                 setIsDeleteLoading(true);
 
@@ -225,6 +251,7 @@ export default function GroupMenu({
                 if (deleted) {
                   setIsDeleteLoading(false);
                   setShowDeleteAlert(false);
+                  router.refresh();
                   router.push('/');
                 }
               }}
