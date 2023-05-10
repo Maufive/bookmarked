@@ -207,7 +207,7 @@ export default function GroupMenu({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete this group?
+              Are you sure you want to delete {selectedGroup.name} ?
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone.
@@ -220,12 +220,12 @@ export default function GroupMenu({
                 event.preventDefault();
                 setIsDeleteLoading(true);
 
-                const deleted = await deleteGroup(2);
+                const deleted = await deleteGroup(selectedGroup.id);
 
                 if (deleted) {
                   setIsDeleteLoading(false);
                   setShowDeleteAlert(false);
-                  router.refresh();
+                  router.push('/');
                 }
               }}
               className="bg-red-600 focus:ring-red-600"
