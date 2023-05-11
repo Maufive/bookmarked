@@ -28,7 +28,7 @@ import { Label } from '@radix-ui/react-label';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { groupCreateSchema } from '@/lib/validations/group';
@@ -46,6 +46,7 @@ import {
   AlertDialogTitle,
 } from './ui/alert-dialog';
 import Link from 'next/link';
+import { toast } from './ui/use-toast';
 
 const ALL_BOOKMARKS_TITLE = 'All bookmarks';
 
@@ -57,11 +58,21 @@ type GroupWithCount = Prisma.GroupGetPayload<{
 }>;
 
 async function deleteGroup(groupId: number) {
-  const response = await fetch(`/api/group/${groupId}`, {
+  return await fetch(`/api/group/${groupId}`, {
     method: 'DELETE',
   });
+}
 
-  return true;
+async function addGroup(groupName: string) {
+  return await fetch(`/api/group`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: groupName,
+    }),
+  });
 }
 
 type BadgeProps = {
@@ -102,32 +113,43 @@ export default function GroupMenu({
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
+    const response = await addGroup(data.name);
 
-    const response = await fetch(`/api/group`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: data.name,
-      }),
+    if (!response?.ok) {
+      return toast({
+        title: 'Something went wrong.',
+        description: 'Your group was not saved. Please try again.',
+        variant: 'destructive',
+      });
+    }
+
+    toast({
+      description: `Group ${data.name} has been saved.`,
     });
 
     setIsSaving(false);
-
-    // if (!response?.ok) {
-    //   return toast({
-    //     title: 'Something went wrong.',
-    //     description: 'Your post was not saved. Please try again.',
-    //     variant: 'destructive',
-    //   });
-    // }
-
     router.refresh();
+  }
 
-    // return toast({
-    //   description: 'Your post has been saved.',
-    // });
+  async function handleConfirmDelete() {
+    if (!selectedGroup) {
+      return;
+    }
+
+    setIsDeleteLoading(true);
+
+    const response = await deleteGroup(selectedGroup.id);
+
+    if (response.ok) {
+      toast({
+        description: 'Group has been removed',
+      });
+
+      setIsDeleteLoading(false);
+      setShowDeleteAlert(false);
+      router.refresh();
+      router.push('/');
+    }
   }
 
   return (
@@ -236,23 +258,7 @@ export default function GroupMenu({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={async (event) => {
-                if (!selectedGroup) {
-                  return;
-                }
-
-                event.preventDefault();
-                setIsDeleteLoading(true);
-
-                const deleted = await deleteGroup(selectedGroup.id);
-
-                if (deleted) {
-                  setIsDeleteLoading(false);
-                  setShowDeleteAlert(false);
-                  router.refresh();
-                  router.push('/');
-                }
-              }}
+              onClick={handleConfirmDelete}
               className="bg-red-600 focus:ring-red-600"
             >
               {isDeleteLoading ? (

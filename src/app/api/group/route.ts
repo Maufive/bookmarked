@@ -15,8 +15,6 @@ export async function POST(req: Request) {
     const json = await req.json();
     const body = groupCreateSchema.parse(json);
 
-    console.log(body);
-
     const post = await db.group.create({
       data: {
         name: body.name,

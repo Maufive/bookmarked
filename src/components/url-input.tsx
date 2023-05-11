@@ -6,9 +6,22 @@ import { Input } from '@/components/ui/input';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Spinner from './ui/spinner';
 import { useRouter } from 'next/navigation';
+import { toast } from './ui/use-toast';
+import { ToastAction } from './ui/toast';
+import Link from 'next/link';
+
+async function addBookmark(url: string, groupId?: number) {
+  return await fetch('/api/bookmark', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ url, groupId }),
+  });
+}
 
 const schema = z.object({
   url: z.string().url(),
@@ -30,25 +43,32 @@ export default function UrlInput({ groupId }: { groupId?: number }) {
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
     setIsLoading(true);
     try {
-      const data = {
-        ...input,
-        groupId,
-      };
+      const response = await addBookmark(input.url, groupId);
 
-      const response = await fetch('/api/bookmark', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.isDuplicate) {
+          toast({
+            title: 'Bookmark already exists.',
+            description: 'It looks like you have already saved this bookmark.',
+            action: (
+              <ToastAction altText="Go to bookmark" asChild>
+                <Link href={`/bookmark/${data.id}`}>Go to bookmark</Link>
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            description: 'Your bookmark has been saved.',
+          });
+        }
+      }
     } catch (error) {
-      // handle error
       console.error(error);
     }
 
     setIsLoading(false);
-    // This forces a cache invalidation.
     router.refresh();
   };
 

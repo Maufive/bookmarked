@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { EditIcon, MoreVertical, TrashIcon, Loader2 } from 'lucide-react';
+import { MoreVertical, TrashIcon, Loader2 } from 'lucide-react';
 import type { Bookmark } from '@prisma/client';
 import {
   DropdownMenu,
@@ -21,23 +21,14 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import Link from 'next/link';
+import { toast } from './ui/use-toast';
 
 async function deleteBookmark(bookmarkId: number) {
-  const response = await fetch(`/api/bookmark/${bookmarkId}`, {
+  return await fetch(`/api/bookmark/${bookmarkId}`, {
     method: 'DELETE',
   });
-
-  // if (!response?.ok) {
-  //   toast({
-  //     title: 'Something went wrong.',
-  //     description: 'Your post was not deleted. Please try again.',
-  //     variant: 'destructive',
-  //   });
-  // }
-
-  return true;
 }
 
 export function ListItemMenu({
@@ -48,6 +39,28 @@ export function ListItemMenu({
   const router = useRouter();
   const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
+
+  const handleDeleteConfirm = async () => {
+    setIsDeleteLoading(true);
+
+    const response = await deleteBookmark(bookmark.id);
+
+    if (response.ok) {
+      toast({
+        description: 'Bookmark has been removed',
+      });
+      setShowDeleteAlert(false);
+      router.refresh();
+    } else {
+      toast({
+        title: 'Something went wrong.',
+        description: 'Your bookmark was not deleted. Please try again.',
+        variant: 'destructive',
+      });
+    }
+
+    setIsDeleteLoading(false);
+  };
 
   return (
     <>
@@ -84,18 +97,7 @@ export function ListItemMenu({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={async (event) => {
-                event.preventDefault();
-                setIsDeleteLoading(true);
-
-                const deleted = await deleteBookmark(bookmark.id);
-
-                if (deleted) {
-                  setIsDeleteLoading(false);
-                  setShowDeleteAlert(false);
-                  router.refresh();
-                }
-              }}
+              onClick={handleDeleteConfirm}
               className="bg-red-600 focus:ring-red-600"
             >
               {isDeleteLoading ? (
@@ -113,11 +115,10 @@ export function ListItemMenu({
 }
 
 type ListItemProps = {
-  children?: React.ReactNode;
   bookmark: Pick<Bookmark, 'id' | 'url' | 'name' | 'hostname' | 'groupId'>;
 };
 
-function ListItem({ children, bookmark }: ListItemProps) {
+function ListItem({ bookmark }: ListItemProps) {
   return (
     <li className="py-2 flex gap-2 justify-between">
       <a

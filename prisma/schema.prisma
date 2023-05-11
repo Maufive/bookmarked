@@ -13,7 +13,7 @@ model Bookmark {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   name        String?  @db.VarChar(255)
-  url         String   @db.VarChar(255)
+  url         String   @unique @db.VarChar(255)
   groupId     Int?
   group       Group?   @relation(fields: [groupId], references: [id])
   hostname    String   @db.Text
@@ -23,7 +23,7 @@ model Bookmark {
   icon        String?  @db.Text
   keywords    String?  @db.Text
 
-  @@index([groupId])
+  @@index([groupId, url])
 }
 
 model Group {

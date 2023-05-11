@@ -11,7 +11,17 @@ export async function POST(request: Request) {
   try {
     const json = await request.json();
     const body = bookmarkCreateSchema.parse(json);
-    // TODO: Check if URL already exists in the db before moving on
+
+    const duplicate = await db.bookmark.findUnique({
+      where: {
+        url: body.url,
+      },
+    });
+
+    if (duplicate) {
+      return new Response(JSON.stringify({ ...duplicate, isDuplicate: true }));
+    }
+
     const url = new URL(body.url);
     const og = await getOpenGraphDataFromUrl(body.url);
     // TODO: Check if OG fails.If it does, the user may have entered an invalid URL or something bad
