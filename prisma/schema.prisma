@@ -14,7 +14,7 @@ model Bookmark {
   updatedAt   DateTime @updatedAt
   name        String?  @db.VarChar(255)
   url         String   @db.VarChar(255)
-  groupId     Int
+  groupId     Int?
   group       Group?   @relation(fields: [groupId], references: [id])
   hostname    String   @db.Text
   description String?  @db.Text
@@ -25,17 +25,6 @@ model Bookmark {
 
   @@index([groupId])
 }
-
-// model Tag {
-//   id         Int      @id @default(autoincrement())
-//   createdAt  DateTime @default(now())
-//   updatedAt  DateTime @updatedAt
-//   name       String   @db.VarChar(255)
-//   Bookmark   Bookmark @relation(fields: [bookmarkId], references: [id])
-//   bookmarkId Int
-
-//   @@index([bookmarkId])
-// }
 
 model Group {
   id        Int        @id @default(autoincrement())

@@ -4,16 +4,17 @@ import getOpenGraphDataFromUrl from '@/lib/open-graph';
 
 const bookmarkCreateSchema = z.object({
   url: z.string().url(),
-  groupId: z.number(),
+  groupId: z.number().optional(),
 });
 
 export async function POST(request: Request) {
   try {
     const json = await request.json();
     const body = bookmarkCreateSchema.parse(json);
+    // TODO: Check if URL already exists in the db before moving on
     const url = new URL(body.url);
     const og = await getOpenGraphDataFromUrl(body.url);
-    // Check if OG fails.If it does, the user may have entered an invalid URL or something bad
+    // TODO: Check if OG fails.If it does, the user may have entered an invalid URL or something bad
     // we should not save this and instead return an error describing the problem
 
     const bookmark = await db.bookmark.create({
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
+    console.log(error);
 
     return new Response(null, { status: 500 });
   }

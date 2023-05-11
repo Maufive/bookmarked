@@ -16,7 +16,7 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-export default function UrlInput({ groupId }: { groupId: number }) {
+export default function UrlInput({ groupId }: { groupId?: number }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {

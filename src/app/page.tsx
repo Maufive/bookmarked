@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <>
       <div className="mb-3 md:mb-5">
-        <UrlInput groupId={1} />
+        <UrlInput />
       </div>
       <div className="space-y-2">
         <h2 className="text-muted-foreground">Title</h2>
