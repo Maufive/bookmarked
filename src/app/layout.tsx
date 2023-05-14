@@ -4,6 +4,8 @@ import Navigation from '@/components/nav';
 import { db } from '@/lib/db';
 import PageLayout from '@/components/page-layout';
 import { Toaster } from '@/components/toaster';
+import { getCurrentUser } from '@/lib/session';
+import clsx from 'clsx';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,16 +20,23 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getCurrentUser();
+
   const groups = await db.group.findMany({
     include: {
       _count: { select: { bookmarks: true } },
     },
   });
-
+  // "min-h-screen bg-background font-sans antialiased",
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navigation groups={groups} />
+      <body
+        className={clsx(
+          'min-h-screen bg-background font-sans antialiased',
+          inter.className
+        )}
+      >
+        <Navigation groups={groups} user={user} />
         <PageLayout>{children}</PageLayout>
         <Toaster />
       </body>

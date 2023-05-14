@@ -4,40 +4,35 @@ import UrlInput from '@/components/url-input';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
+import { Bookmark, User } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
-export default async function Page({
-  params,
-}: {
-  params: { groupId: string };
-}) {
-  const user = await getCurrentUser();
-  const group = await db.group.findUnique({
+async function getBookmarksForUser(userId: User['id']) {
+  return await db.bookmark.findMany({
     where: {
-      id: Number(params.groupId),
-    },
-    include: {
-      bookmarks: true,
+      userId: userId,
     },
   });
+}
+
+export default async function Home() {
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || '/login');
   }
 
-  if (!group) {
-    return <div>Could not find group with id {params.groupId}</div>;
-  }
+  const bookmarks = await getBookmarksForUser(user.id);
 
   return (
     <>
       <div className="mb-3 md:mb-5">
-        <UrlInput groupId={group.id} userId={user?.id} />
+        <UrlInput userId={user.id} />
       </div>
       <div className="space-y-2">
         <h2 className="text-muted-foreground">Title</h2>
         <Separator />
-        <BookmarkList bookmarks={group?.bookmarks} />
+        <BookmarkList bookmarks={bookmarks} />
       </div>
     </>
   );

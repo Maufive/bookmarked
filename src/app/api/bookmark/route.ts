@@ -4,6 +4,7 @@ import getOpenGraphDataFromUrl from '@/lib/open-graph';
 
 const bookmarkCreateSchema = z.object({
   url: z.string().url(),
+  userId: z.string(),
   groupId: z.number().optional(),
 });
 
@@ -11,16 +12,6 @@ export async function POST(request: Request) {
   try {
     const json = await request.json();
     const body = bookmarkCreateSchema.parse(json);
-
-    const duplicate = await db.bookmark.findUnique({
-      where: {
-        url: body.url,
-      },
-    });
-
-    if (duplicate) {
-      return new Response(JSON.stringify({ ...duplicate, isDuplicate: true }));
-    }
 
     const url = new URL(body.url);
     const og = await getOpenGraphDataFromUrl(body.url);
@@ -32,6 +23,7 @@ export async function POST(request: Request) {
         url: body.url,
         groupId: body.groupId,
         hostname: url.hostname,
+        userId: body.userId,
         name: og.title ?? url.href,
         description: og.description,
         image: og.image,
@@ -46,7 +38,6 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
-    console.log(error);
 
     return new Response(null, { status: 500 });
   }

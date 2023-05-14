@@ -1,16 +1,15 @@
 import { db } from '@/lib/db';
 import { groupCreateSchema } from '@/lib/validations/group';
 import { z } from 'zod';
+import { getCurrentUser } from '@/lib/session';
 
 export async function POST(req: Request) {
   try {
-    // const session = await getServerSession(authOptions);
+    const user = await getCurrentUser();
 
-    // if (!session) {
-    //   return new Response('Unauthorized', { status: 403 });
-    // }
-
-    // const { user } = session;
+    if (!user) {
+      return new Response('Unauthorized', { status: 403 });
+    }
 
     const json = await req.json();
     const body = groupCreateSchema.parse(json);
@@ -18,6 +17,7 @@ export async function POST(req: Request) {
     const post = await db.group.create({
       data: {
         name: body.name,
+        userId: user.id,
       },
       select: {
         id: true,

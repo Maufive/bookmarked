@@ -10,16 +10,15 @@ import { useState } from 'react';
 import Spinner from './ui/spinner';
 import { useRouter } from 'next/navigation';
 import { toast } from './ui/use-toast';
-import { ToastAction } from './ui/toast';
-import Link from 'next/link';
+import { User } from '@prisma/client';
 
-async function addBookmark(url: string, groupId?: number) {
+async function addBookmark(url: string, userId: User['id'], groupId?: number) {
   return await fetch('/api/bookmark', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ url, groupId }),
+    body: JSON.stringify({ url, userId, groupId }),
   });
 }
 
@@ -29,7 +28,13 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-export default function UrlInput({ groupId }: { groupId?: number }) {
+export default function UrlInput({
+  groupId,
+  userId,
+}: {
+  groupId?: number;
+  userId: User['id'];
+}) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -43,26 +48,12 @@ export default function UrlInput({ groupId }: { groupId?: number }) {
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
     setIsLoading(true);
     try {
-      const response = await addBookmark(input.url, groupId);
+      const response = await addBookmark(input.url, userId, groupId);
 
       if (response.ok) {
-        const data = await response.json();
-
-        if (data.isDuplicate) {
-          toast({
-            title: 'Bookmark already exists.',
-            description: 'It looks like you have already saved this bookmark.',
-            action: (
-              <ToastAction altText="Go to bookmark" asChild>
-                <Link href={`/bookmark/${data.id}`}>Go to bookmark</Link>
-              </ToastAction>
-            ),
-          });
-        } else {
-          toast({
-            description: 'Your bookmark has been saved.',
-          });
-        }
+        toast({
+          description: 'Your bookmark has been saved.',
+        });
       }
     } catch (error) {
       console.error(error);
