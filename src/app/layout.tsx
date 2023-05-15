@@ -16,9 +16,11 @@ export const metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
   ...rest
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   const user = await getCurrentUser();
 
@@ -38,6 +40,7 @@ export default async function RootLayout({
       >
         <Navigation groups={groups} user={user} />
         <PageLayout>{children}</PageLayout>
+        {modal ? modal : null}
         <Toaster />
       </body>
     </html>

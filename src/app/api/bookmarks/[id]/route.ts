@@ -7,7 +7,7 @@ import { editBookmarkSchema } from '@/lib/validations/bookmark';
 
 const routeContextSchema = z.object({
   params: z.object({
-    bookmarkId: z.string(),
+    id: z.string(),
   }),
 });
 
@@ -20,7 +20,7 @@ export async function DELETE(
 
     await db.bookmark.delete({
       where: {
-        id: Number(params.bookmarkId),
+        id: Number(params.id),
       },
     });
 
@@ -53,7 +53,7 @@ export async function PATCH(
     // Update the user.
     await db.bookmark.update({
       where: {
-        id: Number(params.bookmarkId),
+        id: Number(params.id),
       },
       data: {
         name: bookmark.name,

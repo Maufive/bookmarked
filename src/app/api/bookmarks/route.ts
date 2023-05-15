@@ -9,6 +9,7 @@ const bookmarkCreateSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  console.log('Made it');
   try {
     const json = await request.json();
     const body = bookmarkCreateSchema.parse(json);
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     const url = new URL(body.url);
     const og = await getOpenGraphDataFromUrl(body.url);
     // TODO: Check if OG fails.If it does, the user may have entered an invalid URL or something bad
-    // we should not save this and instead return an error describing the problem
+    // we should not save this and instead return an error describing the problem. For now hjust return undefined
 
     const bookmark = await db.bookmark.create({
       data: {

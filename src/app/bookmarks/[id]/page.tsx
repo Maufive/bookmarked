@@ -2,14 +2,10 @@
 import EditBookmarkForm from '@/components/edit-bookmark-form';
 import { db } from '@/lib/db';
 
-export default async function Page({
-  params,
-}: {
-  params: { bookmarkId: string };
-}) {
+export default async function Page({ params }: { params: { id: string } }) {
   const bookmark = await db.bookmark.findUnique({
     where: {
-      id: Number(params.bookmarkId),
+      id: Number(params.id),
     },
   });
 

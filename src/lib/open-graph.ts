@@ -34,5 +34,14 @@ export default async function getOpenGraphDataFromUrl(url: string) {
         icon,
         keywords,
       };
-    });
+    })
+    .catch((error) => ({
+      title: undefined,
+      description: undefined,
+      url: undefined,
+      siteName: undefined,
+      image: undefined,
+      icon: undefined,
+      keywords: undefined,
+    }));
 }

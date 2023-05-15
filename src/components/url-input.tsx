@@ -41,6 +41,7 @@ export default function UrlInput({
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
   });
@@ -59,6 +60,7 @@ export default function UrlInput({
       console.error(error);
     }
 
+    reset({ url: '' });
     setIsLoading(false);
     router.refresh();
   };
