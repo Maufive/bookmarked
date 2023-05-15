@@ -1,5 +1,9 @@
 import * as z from 'zod';
 import { db } from '@/lib/db';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/session';
+import { editBookmarkSchema } from '@/lib/validations/bookmark';
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -12,15 +16,8 @@ export async function DELETE(
   context: z.infer<typeof routeContextSchema>
 ) {
   try {
-    // Validate the route params.
     const { params } = routeContextSchema.parse(context);
 
-    // Check if the user has access to this bookmark.
-    // if (!(await verifyCurrentUserHasAccessToPost(params.postId))) {
-    //   return new Response(null, { status: 403 });
-    // }
-
-    // Delete the post.
     await db.bookmark.delete({
       where: {
         id: Number(params.bookmarkId),
@@ -28,6 +25,43 @@ export async function DELETE(
     });
 
     return new Response(null, { status: 204 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 });
+    }
+
+    return new Response(null, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
+  try {
+    const { params } = routeContextSchema.parse(context);
+
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return new Response(null, { status: 403 });
+    }
+
+    const body = await req.json();
+    const bookmark = editBookmarkSchema.parse(body);
+
+    // Update the user.
+    await db.bookmark.update({
+      where: {
+        id: Number(params.bookmarkId),
+      },
+      data: {
+        name: bookmark.name,
+        description: bookmark.description,
+      },
+    });
+
+    return new Response(null, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });

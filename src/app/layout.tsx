@@ -27,7 +27,7 @@ export default async function RootLayout({
       _count: { select: { bookmarks: true } },
     },
   });
-  // "min-h-screen bg-background font-sans antialiased",
+
   return (
     <html lang="en">
       <body
