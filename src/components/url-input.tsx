@@ -13,7 +13,7 @@ import { toast } from './ui/use-toast';
 import { User } from '@prisma/client';
 
 async function addBookmark(url: string, userId: User['id'], groupId?: number) {
-  return await fetch('/api/bookmark', {
+  return await fetch('/api/bookmarks', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

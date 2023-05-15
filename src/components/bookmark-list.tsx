@@ -26,7 +26,7 @@ import Link from 'next/link';
 import { toast } from './ui/use-toast';
 
 async function deleteBookmark(bookmarkId: number) {
-  return await fetch(`/api/bookmark/${bookmarkId}`, {
+  return await fetch(`/api/bookmarks/${bookmarkId}`, {
     method: 'DELETE',
   });
 }
@@ -71,7 +71,7 @@ export function ListItemMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={`/bookmark/${bookmark.id}`} className="flex w-full">
+            <Link href={`/bookmarks/${bookmark.id}`} className="flex w-full">
               Edit
             </Link>
           </DropdownMenuItem>

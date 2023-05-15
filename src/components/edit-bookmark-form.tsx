@@ -32,7 +32,7 @@ export default function EditBookmarkForm({ bookmark }: { bookmark: Bookmark }) {
   const onSubmit = async (data: FormData) => {
     setIsSaving(true);
 
-    const response = await fetch(`/api/bookmark/${bookmark.id}`, {
+    const response = await fetch(`/api/bookmarks/${bookmark.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
