@@ -18,7 +18,11 @@ export default async function BookmarkDialog({ params }: RouteContext) {
   });
 
   if (!bookmark) {
-    return null;
+    return (
+      <div>
+        <h2>Bookmark could not be found</h2>
+      </div>
+    );
   }
 
   return <EditBookmarkDialog bookmark={bookmark} />;
