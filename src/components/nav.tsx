@@ -2,12 +2,11 @@
 
 import { BookmarkIcon } from 'lucide-react';
 import { Separator } from './ui/separator';
-import GroupMenu from './group-menu';
 import { Prisma } from '@prisma/client';
 import { useParams } from 'next/navigation';
 import UserAccountNav from './user-account-nav';
-import { User } from 'next-auth';
 import Link from 'next/link';
+import { GroupSelector } from './group-selector';
 
 type GroupWithCount = Prisma.GroupGetPayload<{
   include: {
@@ -49,9 +48,9 @@ export default function Header({
         <Separator orientation="vertical" />
         {user && (
           <>
-            <ul>
-              <li className="px-3 py-2 text-sm font-medium">
-                <GroupMenu groups={groups} selectedGroup={selectedGroup} />
+            <ul className="flex gap-4">
+              <li>
+                <GroupSelector groups={groups} selectedGroup={selectedGroup} />
               </li>
             </ul>
             <div className="flex-grow flex justify-end">

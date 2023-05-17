@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     const post = await db.group.create({
       data: {
         name: body.name,
+        color: body.color,
         userId: user.id,
       },
       select: {

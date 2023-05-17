@@ -96,6 +96,7 @@ model Group {
   updatedAt DateTime   @updatedAt
   name      String     @db.VarChar(255)
   bookmarks Bookmark[]
+  color     String
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
