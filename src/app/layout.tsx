@@ -40,8 +40,8 @@ export default async function RootLayout({
       >
         <Navigation groups={groups} user={user} />
         <PageLayout>{children}</PageLayout>
-        {modal}
         <Toaster />
+        {modal}
       </body>
     </html>
   );
