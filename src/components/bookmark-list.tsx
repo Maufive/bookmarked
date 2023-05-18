@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import type { Bookmark } from '@prisma/client';
 import Link from 'next/link';
+import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
 
 type ListItemProps = {
   bookmark: Pick<Bookmark, 'id' | 'url' | 'name' | 'hostname' | 'groupId'>;
@@ -8,7 +11,13 @@ type ListItemProps = {
 
 function ListItem({ bookmark }: ListItemProps) {
   return (
-    <li className="py-2 flex w-full gap-2 justify-between items-center">
+    <motion.li
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      layout="position"
+      className="py-2 flex w-full gap-2 justify-between items-center"
+    >
       <a
         href={bookmark.url}
         target="__blank"
@@ -33,7 +42,7 @@ function ListItem({ bookmark }: ListItemProps) {
       >
         Edit
       </Link>
-    </li>
+    </motion.li>
   );
 }
 
@@ -45,10 +54,14 @@ export default function BookmarkList({
   >;
 }) {
   return (
-    <ul className="space-y-2">
-      {bookmarks.map((bookmark) => (
-        <ListItem key={bookmark.id} bookmark={bookmark} />
-      ))}
-    </ul>
+    <LayoutGroup>
+      <ul className="space-y-2">
+        <AnimatePresence>
+          {bookmarks.map((bookmark) => (
+            <ListItem key={bookmark.id} bookmark={bookmark} />
+          ))}
+        </AnimatePresence>
+      </ul>
+    </LayoutGroup>
   );
 }

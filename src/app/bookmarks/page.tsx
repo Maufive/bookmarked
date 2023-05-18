@@ -4,13 +4,16 @@ import UrlInput from '@/components/url-input';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { Bookmark, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
 async function getBookmarksForUser(userId: User['id']) {
   return await db.bookmark.findMany({
     where: {
       userId: userId,
+    },
+    orderBy: {
+      createdAt: 'desc',
     },
   });
 }
