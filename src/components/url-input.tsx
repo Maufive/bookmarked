@@ -81,7 +81,11 @@ export default function UrlInput({
           id="url"
           {...register('url')}
         />
-        <Button type="submit" disabled={isSubmitDisabled}>
+        <Button
+          type="submit"
+          disabled={isSubmitDisabled}
+          className="font-semibold"
+        >
           {isLoading ? (
             <>
               <Spinner /> Saving...
