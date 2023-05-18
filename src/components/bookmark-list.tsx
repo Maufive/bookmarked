@@ -8,11 +8,11 @@ type ListItemProps = {
 
 function ListItem({ bookmark }: ListItemProps) {
   return (
-    <li className="py-2 flex gap-2 justify-between">
+    <li className="py-2 flex w-full gap-2 justify-between items-center">
       <a
         href={bookmark.url}
         target="__blank"
-        className="text-primary flex items-center gap-2 flex-1"
+        className="text-primary flex items-center gap-2 flex-1 shrink-1 flex-wrap"
       >
         <Image
           alt="Favicon"
@@ -20,12 +20,15 @@ function ListItem({ bookmark }: ListItemProps) {
           width="16"
           height="16"
         />
-        <p className="text-primary truncate max-w-[400px]">{bookmark.name}</p>
-        <span className="text-muted-foreground text-sm">
+        <p className="text-primary truncate shrink-1 break-words max-w-[300px] lg:max-w-[400px] min-w-[10px]">
+          {bookmark.name}
+        </p>
+        <span className="text-muted-foreground text-sm shrink-0">
           {bookmark.hostname}
         </span>
       </a>
       <Link
+        className="shrink-0"
         href={`/bookmarks/groups/${bookmark.groupId}/bookmark/${bookmark.id}`}
       >
         Edit

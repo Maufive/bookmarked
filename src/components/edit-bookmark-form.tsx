@@ -133,7 +133,7 @@ export default function EditBookmarkForm({ bookmark }: { bookmark: Bookmark }) {
           type="button"
           className={cn(
             buttonVariants({ variant: 'ghost' }),
-            'text-destructive'
+            'text-destructive hover:bg-destructive hover:text-destructive-foreground'
           )}
           onClick={handleDeleteConfirm}
           disabled={isSavingLoading || isDeleteLoading}

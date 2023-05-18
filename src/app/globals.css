@@ -4,67 +4,43 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --bg: 231 15% 18%;
+    --surface-low: 60 30% 96%;
+    --surface-high: 215 20.2% 65.1%;
+    --brand: 326 100% 74%;
+    --brand-hover: 326 100% 59%;
+    --brand-secondary: 265 89% 78%;
+    --brand-tertiary: 31 100% 71%;
+    --brand-text: 326 100% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
-
-    --ring: 215 20.2% 65.1%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: var(--bg);
+    --foreground: var(--surface-low);
 
     --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    --muted-foreground: 218 11% 65%;
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
+    --popover: var(--bg);
+    --popover-foreground: var(--surface-high);
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    --card: var(--bg);
+    --card-foreground: var(--surface-low);
 
-    --border: 216 34% 17%;
+    --border: 225 27% 31%;
     --input: 216 34% 17%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --primary: 60 30% 96%;
+    --primary-foreground: 232 14% 31%;
 
     --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary-foreground: 60 30% 96%;
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    --accent: var(--brand-secondary);
+    --accent-foreground: 216 34% 17%;
 
-    --destructive: 0 63% 31%;
+    --destructive: 0 63% 51%;
     --destructive-foreground: 210 40% 98%;
 
-    --ring: 216 34% 17%;
+    --ring: var(--brand-tertiary);
 
     --radius: 0.5rem;
   }
