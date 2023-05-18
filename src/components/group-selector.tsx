@@ -133,14 +133,18 @@ const badgeStyle = (color: string) => ({
 type FancyBoxProps = {
   groups: Array<GroupWithCount>;
   selectedGroup?: GroupWithCount;
+  totalBookmarksCount?: number;
 };
 
-export function GroupSelector({ groups, selectedGroup }: FancyBoxProps) {
+export function GroupSelector({
+  groups,
+  selectedGroup,
+  totalBookmarksCount,
+}: FancyBoxProps) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [openCombobox, setOpenCombobox] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [searchValue, setSearchValue] = useState<string>('');
   const [showNewGroupDialog, setShowNewGroupDialog] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -149,10 +153,9 @@ export function GroupSelector({ groups, selectedGroup }: FancyBoxProps) {
     control,
     handleSubmit,
     reset,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useForm<FormData>({
     resolver: zodResolver(groupCreateSchema),
-    mode: 'onChange',
   });
 
   const isSubmitDisabled = isSaving || !isValid;
@@ -212,11 +215,25 @@ export function GroupSelector({ groups, selectedGroup }: FancyBoxProps) {
               <CommandEmpty>No results found.</CommandEmpty>
 
               <CommandGroup className="max-h-[145px] overflow-auto">
+                <Link href={`/bookmarks`}>
+                  <CommandItem>
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        !selectedGroup ? 'opacity-100' : 'opacity-0'
+                      )}
+                    />
+                    <div className="flex-1 truncate">All bookmarks</div>
+                    <Counter color="#a855f7">
+                      {String(totalBookmarksCount ?? 0)}
+                    </Counter>
+                  </CommandItem>
+                </Link>
                 {groups.map((group) => {
                   const isActive = selectedGroup?.id === group.id;
                   return (
                     <Link key={group.id} href={`/bookmarks/groups/${group.id}`}>
-                      <CommandItem key={group.id} value={String(group.name)}>
+                      <CommandItem value={String(group.name)}>
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',

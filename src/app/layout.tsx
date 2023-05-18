@@ -30,6 +30,10 @@ export default async function RootLayout({
     },
   });
 
+  const totalBookmarksCount = await db.bookmark.count({
+    where: { userId: user?.id },
+  });
+
   return (
     <html lang="en">
       <body
@@ -38,7 +42,11 @@ export default async function RootLayout({
           inter.className
         )}
       >
-        <Navigation groups={groups} user={user} />
+        <Navigation
+          groups={groups}
+          user={user}
+          totalBookmarksCount={totalBookmarksCount}
+        />
         <PageLayout>{children}</PageLayout>
         <Toaster />
         {modal}

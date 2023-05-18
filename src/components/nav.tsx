@@ -23,9 +23,11 @@ type BookmarkUser = {
 export default function Header({
   groups,
   user,
+  totalBookmarksCount,
 }: {
   groups: Array<GroupWithCount>;
   user?: BookmarkUser;
+  totalBookmarksCount?: number;
 }) {
   const params = useParams();
   const selectedGroup = groups.find(
@@ -50,7 +52,11 @@ export default function Header({
           <>
             <ul className="flex gap-4">
               <li>
-                <GroupSelector groups={groups} selectedGroup={selectedGroup} />
+                <GroupSelector
+                  groups={groups}
+                  selectedGroup={selectedGroup}
+                  totalBookmarksCount={totalBookmarksCount}
+                />
               </li>
             </ul>
             <div className="flex-grow flex justify-end">
