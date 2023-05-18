@@ -215,7 +215,7 @@ export function GroupSelector({ groups, selectedGroup }: FancyBoxProps) {
                 {groups.map((group) => {
                   const isActive = selectedGroup?.id === group.id;
                   return (
-                    <Link key={group.id} href={`/group/${group.id}`}>
+                    <Link key={group.id} href={`/bookmarks/groups/${group.id}`}>
                       <CommandItem key={group.id} value={String(group.name)}>
                         <Check
                           className={cn(

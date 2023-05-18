@@ -1,8 +1,16 @@
 import { buttonVariants } from '@/components/ui/button';
+import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
+  const user = await getCurrentUser();
+
+  if (user) {
+    redirect('/bookmarks');
+  }
+
   return (
     <section className="space-y-6 pb-8 pt-6 md:pb-12">
       <div className="container flex flex-col gap-4">

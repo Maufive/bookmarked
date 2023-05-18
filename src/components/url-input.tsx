@@ -60,9 +60,9 @@ export default function UrlInput({
       console.error(error);
     }
 
+    router.refresh();
     reset({ url: '' });
     setIsLoading(false);
-    router.refresh();
   };
 
   const isSubmitDisabled = Boolean(errors.url || !isValid);

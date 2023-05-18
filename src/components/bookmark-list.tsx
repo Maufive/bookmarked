@@ -25,7 +25,11 @@ function ListItem({ bookmark }: ListItemProps) {
           {bookmark.hostname}
         </span>
       </a>
-      <Link href={`/bookmarks/${bookmark.id}`}>Edit</Link>
+      <Link
+        href={`/bookmarks/groups/${bookmark.groupId}/bookmark/${bookmark.id}`}
+      >
+        Edit
+      </Link>
     </li>
   );
 }
