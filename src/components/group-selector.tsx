@@ -193,14 +193,14 @@ export function GroupSelector({
   }
 
   return (
-    <div className="max-w-[230px]">
+    <div className="w-[230px] sm:w-[250px] md:w-[300px] lg:max-w-[230px]">
       <Popover open={openCombobox} onOpenChange={onComboboxOpenChange}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={openCombobox}
-            className="w-[200px] justify-between text-foreground"
+            className="w-[230px] sm:w-[250px] md:w-[300px] lg:w-[230px] justify-between text-foreground"
           >
             <span className="truncate">
               {selectedGroup?.name ?? 'All bookmarks'}
@@ -208,14 +208,20 @@ export function GroupSelector({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        {openCombobox && (
+          <div className="fixed inset-0 z-20 bg-background/80 backdrop-blur-sm lg:hidden" />
+        )}
+        <PopoverContent className="w-[230px] sm:w-[250px] md:w-[300px] lg:max-w-[230px] p-0">
           <Command loop>
             <CommandInput ref={inputRef} placeholder="Search groups..." />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
 
               <CommandGroup className="max-h-[145px] overflow-auto">
-                <Link href={`/bookmarks`}>
+                <Link
+                  href={`/bookmarks`}
+                  onClick={() => setOpenCombobox(false)}
+                >
                   <CommandItem>
                     <Check
                       className={cn(
@@ -232,7 +238,11 @@ export function GroupSelector({
                 {groups.map((group) => {
                   const isActive = selectedGroup?.id === group.id;
                   return (
-                    <Link key={group.id} href={`/bookmarks/groups/${group.id}`}>
+                    <Link
+                      key={group.id}
+                      href={`/bookmarks/groups/${group.id}`}
+                      onClick={() => setOpenCombobox(false)}
+                    >
                       <CommandItem value={String(group.name)}>
                         <Check
                           className={cn(
@@ -271,7 +281,7 @@ export function GroupSelector({
         </PopoverContent>
       </Popover>
       <Dialog open={showNewGroupDialog} onOpenChange={setShowNewGroupDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="max-w-[300px] sm:max-w-[425px]">
           <form onSubmit={handleSubmit(onSubmit)} className="grid w-full gap-4">
             <DialogHeader>
               <DialogTitle>Add new Group</DialogTitle>
