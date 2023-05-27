@@ -38,7 +38,7 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={clsx(
-          'min-h-screen bg-background font-sans antialiased',
+          'relative min-h-screen bg-background font-sans antialiased',
           inter.className
         )}
       >

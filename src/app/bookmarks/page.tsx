@@ -33,7 +33,7 @@ export default async function Home() {
         <UrlInput userId={user.id} />
       </div>
       <div className="space-y-2">
-        <h2 className="text-muted-foreground">Title</h2>
+        <h2 className="text-muted-foreground">Links</h2>
         <Separator />
         <BookmarkList bookmarks={bookmarks} />
       </div>

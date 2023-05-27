@@ -69,3 +69,35 @@
   );
   background-clip: text;
 }
+
+.background-gradient {
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(120, 119, 198, 0.3),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.animate-title {
+  animation: 1000ms ease 0s 1 normal backwards running fadeIn;
+}
+
+.animate-description {
+  animation: 1200ms ease 400ms 1 normal backwards running fadeIn;
+}
+
+.animate-cta {
+  animation: 1200ms ease 800ms 1 normal backwards running fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}

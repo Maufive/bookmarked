@@ -35,7 +35,7 @@ export default async function Page({
         <UrlInput groupId={group.id} userId={user?.id} />
       </div>
       <div className="flex flex-col gap-2">
-        <h2 className="text-muted-foreground">Title</h2>
+        <h2 className="text-muted-foreground">Links</h2>
         <Separator />
         <BookmarkList bookmarks={group?.bookmarks} />
       </div>
