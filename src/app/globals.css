@@ -55,3 +55,17 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
+
+.title-effect {
+  color: unset;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    to right bottom,
+    rgb(255, 255, 255) 30%,
+    rgba(255, 255, 255, 0.48)
+  );
+  background-clip: text;
+}

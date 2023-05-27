@@ -35,25 +35,22 @@ export default function Header({
   );
 
   return (
-    <nav className="w-full h-[68px]">
-      <div className="flex gap-4 mx-auto max-w-7xl p-4 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="flex gap-2 items-center align-center text-brand"
-        >
+    <nav className="h-[68px] w-full">
+      <div className="mx-auto flex max-w-7xl gap-4 p-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 text-brand">
           <BookmarkIcon className="ml-auto h-4 w-4" fill="currentColor" />
-          <h2 className="font-black hidden sm:block">Linkaroo</h2>
+          <h2 className="hidden font-black sm:block">Linkaroo</h2>
         </Link>
         {user && (
           <>
-            <div className="flex justify-center sm:justify-end flex-auto">
+            <div className="flex flex-auto justify-center sm:justify-end">
               <GroupSelector
                 groups={groups}
                 selectedGroup={selectedGroup}
                 totalBookmarksCount={totalBookmarksCount}
               />
             </div>
-            <div className="flex justify-end flex-none">
+            <div className="flex flex-none justify-end">
               <UserAccountNav user={user} />
             </div>
           </>

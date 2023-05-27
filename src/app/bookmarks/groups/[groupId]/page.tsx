@@ -31,12 +31,12 @@ export default async function Page({
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-10 w-full h-16 p-2 md:static md:mb-5">
+      <div className="fixed bottom-0 left-0 z-10 h-16 w-full p-2 md:static md:mb-5">
         <UrlInput groupId={group.id} userId={user?.id} />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-muted-foreground">Title</h2>
-        <Separator className="shrink-1" />
+        <Separator />
         <BookmarkList bookmarks={group?.bookmarks} />
       </div>
     </>

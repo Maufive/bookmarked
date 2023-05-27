@@ -76,7 +76,7 @@ export default function UrlInput({
         <Input
           placeholder="Add link here"
           type="url"
-          className="shadow-md flex-auto"
+          className="flex-auto shadow-md"
           autoComplete="off"
           id="url"
           {...register('url')}
@@ -84,7 +84,7 @@ export default function UrlInput({
         <Button
           type="submit"
           disabled={isSubmitDisabled}
-          className="font-semibold flex-none"
+          className="flex-none font-semibold"
         >
           {isLoading ? (
             <>

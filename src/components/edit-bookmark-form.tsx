@@ -128,7 +128,7 @@ export default function EditBookmarkForm({ bookmark }: { bookmark: Bookmark }) {
           <p className="text-xs text-red-500">{errors.description?.message}</p>
         )}
       </div>
-      <div className="flex gap-2 justify-end">
+      <div className="flex justify-end gap-2">
         <button
           type="button"
           className={cn(

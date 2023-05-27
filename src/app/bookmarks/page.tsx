@@ -29,7 +29,7 @@ export default async function Home() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-10 w-full p-4 md:p-0 md:static md:mb-5">
+      <div className="fixed bottom-0 left-0 z-10 w-full p-4 md:static md:mb-5 md:p-0">
         <UrlInput userId={user.id} />
       </div>
       <div className="space-y-2">

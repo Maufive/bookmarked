@@ -13,9 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
       <section className="flex flex-col gap-10">
         <div className="flex flex-col gap-2">
-          <h1 className="font-heading text-2xl md:text-3xl">
-            Bookmark not found
-          </h1>
+          <h1 className="text-2xl md:text-3xl">Bookmark not found</h1>
         </div>
       </section>
     );
@@ -24,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <section className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
-        <h1 className="font-heading text-2xl md:text-3xl">Edit Bookmark</h1>
+        <h1 className="text-2xl md:text-3xl">Edit Bookmark</h1>
         <p className="text-lg text-muted-foreground">{bookmark.name}</p>
       </div>
       {bookmark.image ? (

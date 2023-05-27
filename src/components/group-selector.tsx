@@ -93,7 +93,7 @@ type BadgeProps = {
 function Counter({ children, color }: BadgeProps) {
   return (
     <span
-      className="flex items-center justify-center h-5 w-5 text-white rounded-sm"
+      className="flex h-5 w-5 items-center justify-center rounded-sm text-white"
       style={{ backgroundColor: color }}
     >
       {children}
@@ -200,7 +200,7 @@ export function GroupSelector({
             variant="outline"
             role="combobox"
             aria-expanded={openCombobox}
-            className="w-[230px] sm:w-[250px] md:w-[300px] lg:w-[230px] justify-between text-foreground"
+            className="w-[230px] justify-between text-foreground sm:w-[250px] md:w-[300px] lg:w-[230px]"
           >
             <span className="truncate">
               {selectedGroup?.name ?? 'All bookmarks'}
@@ -211,7 +211,7 @@ export function GroupSelector({
         {openCombobox && (
           <div className="fixed inset-0 z-20 bg-background/80 backdrop-blur-sm lg:hidden" />
         )}
-        <PopoverContent className="w-[230px] sm:w-[250px] md:w-[300px] lg:max-w-[230px] p-0">
+        <PopoverContent className="w-[230px] p-0 sm:w-[250px] md:w-[300px] lg:max-w-[230px]">
           <Command loop>
             <CommandInput ref={inputRef} placeholder="Search groups..." />
             <CommandList>
@@ -312,7 +312,7 @@ export function GroupSelector({
                         value={color}
                         id={color}
                         {...register('color')}
-                        className="text-white border-none h-6 w-6"
+                        className="h-6 w-6 border-none text-white"
                         style={{ backgroundColor: color }}
                       />
                     ))}
@@ -345,7 +345,7 @@ export function GroupSelector({
           setOpenDialog(open);
         }}
       >
-        <DialogContent className="max-h-[90vh] flex flex-col">
+        <DialogContent className="flex max-h-[90vh] flex-col">
           <DialogHeader>
             <DialogTitle>Edit Labels</DialogTitle>
             <DialogDescription>
@@ -353,12 +353,12 @@ export function GroupSelector({
               through the combobox though.
             </DialogDescription>
           </DialogHeader>
-          <div className="overflow-scroll -mx-6 px-6 flex-1 py-2">
+          <div className="-mx-6 flex-1 overflow-scroll px-6 py-2">
             {groups.map((group) => {
               return <DialogListItem key={group.id} group={group} />;
             })}
           </div>
-          <DialogFooter className="bg-opacity-40">
+          <DialogFooter className="opacity-40">
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
@@ -431,7 +431,7 @@ const DialogListItem = ({ group }: { group: Group }) => {
       onValueChange={setAccordionValue}
     >
       <AccordionItem value={group.name}>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div>
             <Badge variant="outline" style={badgeStyle(group.color)}>
               {group.name}
@@ -482,7 +482,7 @@ const DialogListItem = ({ group }: { group: Group }) => {
             className="flex items-end gap-4 pl-1"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="w-full gap-3 grid">
+            <div className="grid w-full gap-3">
               <Label htmlFor="name">Group name</Label>
               <Input
                 id="name"
@@ -495,7 +495,7 @@ const DialogListItem = ({ group }: { group: Group }) => {
                 <p className="text-destructive">{errors.name.message}</p>
               )}
             </div>
-            <div className="gap-3 grid">
+            <div className="grid gap-3">
               <Label htmlFor="color">Color</Label>
               <Input
                 id="color"
