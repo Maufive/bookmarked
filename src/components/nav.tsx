@@ -35,7 +35,7 @@ export default function Header({
   );
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-10 w-full">
+    <nav className="fixed inset-x-0 top-0 z-10 w-full backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl gap-4 p-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 text-brand">
           <BookmarkIcon className="ml-auto h-4 w-4" fill="currentColor" />

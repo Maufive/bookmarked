@@ -101,3 +101,14 @@
     transform: none;
   }
 }
+
+@media (max-width: 600px) and (-webkit-min-device-pixel-ratio: 2) {
+  select,
+  select:focus,
+  textarea,
+  textarea:focus,
+  input,
+  input:focus {
+    font-size: 16px;
+  }
+}
