@@ -39,7 +39,7 @@ export default function Header({
       <div className="mx-auto flex max-w-7xl gap-4 p-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 text-brand">
           <BookmarkIcon className="ml-auto h-4 w-4" fill="currentColor" />
-          <h2 className="hidden font-black sm:block">Linkaroo</h2>
+          <h2 className="hidden font-black sm:block">Bookmarked</h2>
         </Link>
         {user && (
           <>

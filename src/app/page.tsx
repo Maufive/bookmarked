@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <>
       <h1 className="title-effect animate-title text-center text-3xl font-medium sm:text-5xl">
-        Welcome to Linkaroo, the all-in-one bookmark haven!
+        Welcome to Bookmarked, the all-in-one bookmark haven!
       </h1>
       <p className="animate-description max-w-[42rem] text-center leading-normal text-muted-foreground sm:text-xl sm:leading-8">
         Say goodbye to scattered links and embrace the convenience of saving,
