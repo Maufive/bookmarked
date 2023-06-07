@@ -31,7 +31,7 @@ export default async function Page({
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-10 h-16 w-full p-2 md:static md:mb-5">
+      <div className="fixed bottom-0 left-0 z-10 w-full bg-background p-4 md:static md:mb-5 md:bg-transparent md:p-0">
         <UrlInput groupId={group.id} userId={user?.id} />
       </div>
       <div className="flex flex-col gap-2">
