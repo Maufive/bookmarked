@@ -1,5 +1,6 @@
 import EditBookmarkDialog from '@/components/edit-bookmark-dialog';
 import { db } from '@/lib/db';
+import { getCurrentUser } from '@/lib/session';
 import { z } from 'zod';
 
 const routeContextSchema = z.object({
@@ -11,10 +12,23 @@ const routeContextSchema = z.object({
 type RouteContext = z.infer<typeof routeContextSchema>;
 
 export default async function BookmarkDialog({ params }: RouteContext) {
+  const user = await getCurrentUser();
+
   const bookmark = await db.bookmark.findUnique({
     where: {
       id: Number(params.id),
     },
+  });
+
+  const groups = await db.group.findMany({
+    select: {
+      id: true,
+      name: true,
+      color: true
+    },
+    where: {
+      userId: user?.id
+    }
   });
 
   if (!bookmark) {
@@ -25,5 +39,5 @@ export default async function BookmarkDialog({ params }: RouteContext) {
     );
   }
 
-  return <EditBookmarkDialog bookmark={bookmark} />;
+  return <EditBookmarkDialog bookmark={bookmark} groups={groups} />;
 }

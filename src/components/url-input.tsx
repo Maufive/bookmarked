@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import Spinner from './ui/spinner';
-import { useRouter } from 'next/navigation';
-import { toast } from './ui/use-toast';
-import { User } from '@prisma/client';
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import Spinner from "./ui/spinner";
+import { useRouter } from "next/navigation";
+import { toast } from "./ui/use-toast";
+import { User } from "@prisma/client";
 
-async function addBookmark(url: string, userId: User['id'], groupId?: number) {
-  return await fetch('/api/bookmarks', {
-    method: 'POST',
+async function addBookmark(url: string, userId: User["id"], groupId?: number) {
+  return await fetch("/api/bookmarks", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ url, userId, groupId }),
   });
@@ -33,7 +33,7 @@ export default function UrlInput({
   userId,
 }: {
   groupId?: number;
-  userId: User['id'];
+  userId: User["id"];
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +53,7 @@ export default function UrlInput({
 
       if (response.ok) {
         toast({
-          description: 'Your bookmark has been saved.',
+          description: "Your bookmark has been saved.",
         });
       }
     } catch (error) {
@@ -61,42 +61,44 @@ export default function UrlInput({
     }
 
     router.refresh();
-    reset({ url: '' });
+    reset({ url: "" });
     setIsLoading(false);
   };
 
-  const isSubmitDisabled = Boolean(errors.url || !isValid);
-
   return (
-    <>
-      <form
-        className="flex w-full items-center space-x-2"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+    <form
+      className="flex w-full items-center space-x-2"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="flex w-full flex-col gap-2">
         <Input
           placeholder="Add link here"
           type="url"
           className="flex-auto shadow-md"
           autoComplete="off"
           id="url"
-          {...register('url')}
+          {...register("url")}
         />
-        <Button
-          type="submit"
-          disabled={isSubmitDisabled}
-          className="flex-none font-semibold"
-        >
-          {isLoading ? (
-            <>
-              <Spinner /> Saving...
-            </>
-          ) : (
-            <>
-              <Plus className="mr-2 h-4 w-4" /> Add
-            </>
-          )}
-        </Button>
-      </form>
-    </>
+
+        {errors.url && (
+          <p className="text-xs text-red-500">{errors.url?.message}</p>
+        )}
+      </div>
+      <Button
+        type="submit"
+        disabled={!isValid || isLoading}
+        className="flex-none font-semibold"
+      >
+        {isLoading ? (
+          <>
+            <Spinner /> Saving...
+          </>
+        ) : (
+          <>
+            <Plus className="mr-2 size-4" /> Add
+          </>
+        )}
+      </Button>
+    </form>
   );
 }

@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { BookmarkIcon } from 'lucide-react';
-import { Separator } from './ui/separator';
-import { Prisma } from '@prisma/client';
-import { useParams } from 'next/navigation';
-import UserAccountNav from './user-account-nav';
-import Link from 'next/link';
-import { GroupSelector } from './group-selector';
-
-type GroupWithCount = Prisma.GroupGetPayload<{
-  include: {
-    _count: true;
-  };
-}>;
+import { BookmarkIcon } from "lucide-react";
+import { Separator } from "./ui/separator";
+import { Group, Prisma } from "@prisma/client";
+import { useParams } from "next/navigation";
+import UserAccountNav from "./user-account-nav";
+import Link from "next/link";
+import { GroupSelector } from "./group-selector";
+import { useEffect, useState } from "react";
+import {
+  GroupWithBookmarksCount,
+  getGroupsForUserWithBookmarksCount,
+} from "@/app/groups/actions";
 
 type BookmarkUser = {
   email?: string | null;
@@ -21,14 +20,24 @@ type BookmarkUser = {
 };
 
 export default function Header({
-  groups,
   user,
   totalBookmarksCount,
 }: {
-  groups: Array<GroupWithCount>;
   user?: BookmarkUser;
   totalBookmarksCount?: number;
 }) {
+  const [groups, setGroups] = useState<Array<GroupWithBookmarksCount>>([]);
+
+  useEffect(() => {
+    const updateGroups = async () => {
+      const updatedGroups = await getGroupsForUserWithBookmarksCount();
+
+      setGroups(updatedGroups);
+    };
+
+    updateGroups();
+  }, []);
+
   const params = useParams();
   const selectedGroup = groups.find(
     (group) => String(group.id) === params.groupId
@@ -38,7 +47,7 @@ export default function Header({
     <nav className="fixed inset-x-0 top-0 z-10 w-full backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl gap-4 p-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 text-brand">
-          <BookmarkIcon className="ml-auto h-4 w-4" fill="currentColor" />
+          <BookmarkIcon className="ml-auto size-4" fill="currentColor" />
           <h2 className="hidden font-black sm:block">Bookmarked</h2>
         </Link>
         {user && (

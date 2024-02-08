@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import * as React from 'react';
+import * as React from "react";
 import {
   Check,
   ChevronsUpDown,
@@ -8,16 +8,15 @@ import {
   Loader2,
   Plus,
   PlusIcon,
-  SaveIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from "@/components/ui/accordion";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,9 +27,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -39,7 +38,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command';
+} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -47,42 +46,38 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { Label } from '@/components/ui/label';
-import { Group, Prisma } from '@prisma/client';
-import { FormEvent, useEffect, useRef, useState } from 'react';
-import { toast } from './ui/use-toast';
-import { useRouter } from 'next/navigation';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { groupCreateSchema } from '@/lib/validations/group';
-import { Input } from './ui/input';
-import { z } from 'zod';
-import Spinner from './ui/spinner';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import Link from 'next/link';
+} from "@/components/ui/popover";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Label } from "@/components/ui/label";
+import { Group, Prisma } from "@prisma/client";
+import { useRef, useState } from "react";
+import { toast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { groupCreateSchema } from "@/lib/validations/group";
+import { Input } from "./ui/input";
+import { z } from "zod";
+import Spinner from "./ui/spinner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Link from "next/link";
+import { GroupWithBookmarksCount } from "@/app/groups/actions";
 
-type GroupEditValues = Pick<Group, 'name' | 'color'>;
+type GroupEditValues = Pick<Group, "name" | "color">;
 type FormData = z.infer<typeof groupCreateSchema>;
-type GroupWithCount = Prisma.GroupGetPayload<{
-  include: {
-    _count: true;
-  };
-}>;
 
 const colors = [
-  '#ef4444',
-  '#eab308',
-  '#22c55e',
-  '#06b6d4',
-  '#3b82f6',
-  '#8b5cf6',
+  "#ef4444",
+  "#eab308",
+  "#22c55e",
+  "#06b6d4",
+  "#3b82f6",
+  "#8b5cf6",
 ];
 
 type BadgeProps = {
@@ -93,7 +88,7 @@ type BadgeProps = {
 function Counter({ children, color }: BadgeProps) {
   return (
     <span
-      className="flex h-5 w-5 items-center justify-center rounded-sm text-white"
+      className="flex size-5 items-center justify-center rounded-sm text-white"
       style={{ backgroundColor: color }}
     >
       {children}
@@ -103,13 +98,13 @@ function Counter({ children, color }: BadgeProps) {
 
 async function deleteGroup(groupId: number) {
   return await fetch(`/api/group/${groupId}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 }
 
 async function addGroup({ name, color }: GroupEditValues) {
   return await fetch(`/api/group`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
       name,
       color,
@@ -119,7 +114,7 @@ async function addGroup({ name, color }: GroupEditValues) {
 
 async function editGroup(groupId: number, group: GroupEditValues) {
   return await fetch(`/api/group/${groupId}`, {
-    method: 'PATCH',
+    method: "PATCH",
     body: JSON.stringify({ ...group, groupId }),
   });
 }
@@ -131,8 +126,8 @@ const badgeStyle = (color: string) => ({
 });
 
 type FancyBoxProps = {
-  groups: Array<GroupWithCount>;
-  selectedGroup?: GroupWithCount;
+  groups: Array<GroupWithBookmarksCount>;
+  selectedGroup?: GroupWithBookmarksCount;
   totalBookmarksCount?: number;
 };
 
@@ -174,9 +169,9 @@ export function GroupSelector({
 
     if (!response?.ok) {
       return toast({
-        title: 'Something went wrong.',
-        description: 'Your group was not saved. Please try again.',
-        variant: 'destructive',
+        title: "Something went wrong.",
+        description: "Your group was not saved. Please try again.",
+        variant: "destructive",
       });
     }
 
@@ -185,7 +180,7 @@ export function GroupSelector({
     });
 
     reset({
-      name: '',
+      name: "",
     });
     setIsSaving(false);
     setShowNewGroupDialog(false);
@@ -203,9 +198,9 @@ export function GroupSelector({
             className="w-[230px] justify-between text-foreground sm:w-[250px] md:w-[300px] lg:w-[230px]"
           >
             <span className="truncate">
-              {selectedGroup?.name ?? 'All bookmarks'}
+              {selectedGroup?.name ?? "All bookmarks"}
             </span>
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         {openCombobox && (
@@ -225,8 +220,8 @@ export function GroupSelector({
                   <CommandItem>
                     <Check
                       className={cn(
-                        'mr-2 h-4 w-4',
-                        !selectedGroup ? 'opacity-100' : 'opacity-0'
+                        "mr-2 h-4 w-4",
+                        !selectedGroup ? "opacity-100" : "opacity-0"
                       )}
                     />
                     <div className="flex-1 truncate">All bookmarks</div>
@@ -246,8 +241,8 @@ export function GroupSelector({
                       <CommandItem value={String(group.name)}>
                         <Check
                           className={cn(
-                            'mr-2 h-4 w-4',
-                            isActive ? 'opacity-100' : 'opacity-0'
+                            "mr-2 h-4 w-4",
+                            isActive ? "opacity-100" : "opacity-0"
                           )}
                         />
                         <div className="flex-1 truncate">{group.name}</div>
@@ -266,14 +261,14 @@ export function GroupSelector({
                 className="text-sm text-muted-foreground"
                 onSelect={() => setOpenDialog(true)}
               >
-                <Edit2 className="mr-2 h-3 w-3" />
+                <Edit2 className="mr-2 size-3" />
                 Edit Groups
               </CommandItem>
               <CommandItem
                 className="text-sm text-muted-foreground"
                 onSelect={() => setShowNewGroupDialog(true)}
               >
-                <PlusIcon className="mr-2 h-3 w-3" />
+                <PlusIcon className="mr-2 size-3" />
                 New Group
               </CommandItem>
             </CommandGroup>
@@ -292,7 +287,7 @@ export function GroupSelector({
             </DialogHeader>
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" {...register('name')} autoComplete="off" />
+              <Input id="name" {...register("name")} autoComplete="off" />
             </div>
             <div className="flex flex-col gap-2">
               <Label>Color</Label>
@@ -311,8 +306,8 @@ export function GroupSelector({
                         key={color}
                         value={color}
                         id={color}
-                        {...register('color')}
-                        className="h-6 w-6 border-none text-white"
+                        {...register("color")}
+                        className="size-6 border-none text-white"
                         style={{ backgroundColor: color }}
                       />
                     ))}
@@ -328,7 +323,7 @@ export function GroupSelector({
                   </>
                 ) : (
                   <>
-                    <Plus className="mr-2 h-4 w-4" /> Save Group
+                    <Plus className="mr-2 size-4" /> Save Group
                   </>
                 )}
               </Button>
@@ -372,7 +367,7 @@ export function GroupSelector({
 const DialogListItem = ({ group }: { group: Group }) => {
   const router = useRouter();
   const [colorValue, setColorValue] = useState<string>(group.color);
-  const [accordionValue, setAccordionValue] = useState<string>('');
+  const [accordionValue, setAccordionValue] = useState<string>("");
   const [isLoadingUpdate, setIsLoadingUpdate] = useState<boolean>(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
 
@@ -395,9 +390,9 @@ const DialogListItem = ({ group }: { group: Group }) => {
 
     if (!response?.ok) {
       return toast({
-        title: 'Something went wrong.',
-        description: 'Your group was not saved. Please try again.',
-        variant: 'destructive',
+        title: "Something went wrong.",
+        description: "Your group was not saved. Please try again.",
+        variant: "destructive",
       });
     }
 
@@ -406,7 +401,7 @@ const DialogListItem = ({ group }: { group: Group }) => {
     });
 
     setIsLoadingUpdate(false);
-    setAccordionValue('');
+    setAccordionValue("");
     router.refresh();
   };
 
@@ -447,9 +442,9 @@ const DialogListItem = ({ group }: { group: Group }) => {
                   disabled={isLoadingDelete}
                 >
                   {isLoadingDelete ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="size-4 animate-spin" />
                   ) : (
-                    'Delete'
+                    "Delete"
                   )}
                 </Button>
               </AlertDialogTrigger>
@@ -486,7 +481,7 @@ const DialogListItem = ({ group }: { group: Group }) => {
               <Label htmlFor="name">Group name</Label>
               <Input
                 id="name"
-                {...register('name')}
+                {...register("name")}
                 defaultValue={group.name}
                 className="h-8"
                 autoComplete="off"
@@ -501,16 +496,16 @@ const DialogListItem = ({ group }: { group: Group }) => {
                 id="color"
                 type="color"
                 value={colorValue}
-                {...register('color')}
+                {...register("color")}
                 onChange={(e) => setColorValue(e.target.value)}
                 className="h-8 px-2 py-1"
               />
             </div>
             <Button type="submit" disabled={isSubmitDisabled} size="xs">
               {isLoadingUpdate ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="size-4 animate-spin" />
               ) : (
-                'Save'
+                "Save"
               )}
             </Button>
           </form>

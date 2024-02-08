@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import type { Bookmark } from '@prisma/client';
-import Link from 'next/link';
-import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from './ui/button';
+import type { Bookmark } from "@prisma/client";
+import Link from "next/link";
+import { motion, LayoutGroup, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "./ui/button";
 
 type ListItemProps = {
-  bookmark: Pick<Bookmark, 'id' | 'url' | 'name' | 'hostname' | 'groupId'>;
+  bookmark: Pick<Bookmark, "id" | "url" | "name" | "hostname" | "groupId">;
 };
 
 function ListItem({ bookmark }: ListItemProps) {
@@ -22,7 +22,7 @@ function ListItem({ bookmark }: ListItemProps) {
       <img
         alt="Bookmark favicon"
         src={`https://www.google.com/s2/favicons?domain=${bookmark.hostname}&sz=48`}
-        className="h-6 w-6 flex-none rounded-full lg:h-4 lg:w-4"
+        className="size-6 flex-none rounded-full lg:size-4"
       />
       <a
         href={bookmark.url}
@@ -35,7 +35,7 @@ function ListItem({ bookmark }: ListItemProps) {
         </span>
       </a>
       <Link
-        className={cn(buttonVariants({ variant: 'ghost' }), 'flex-none')}
+        className={cn(buttonVariants({ variant: "ghost" }), "flex-none")}
         href={`/bookmarks/groups/${bookmark.groupId}/bookmark/${bookmark.id}`}
       >
         Edit
@@ -48,7 +48,7 @@ export default function BookmarkList({
   bookmarks,
 }: {
   bookmarks: Array<
-    Pick<Bookmark, 'id' | 'url' | 'name' | 'hostname' | 'groupId'>
+    Pick<Bookmark, "id" | "url" | "name" | "hostname" | "groupId">
   >;
 }) {
   return (
