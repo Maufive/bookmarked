@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import EditBookmarkForm from '@/components/edit-bookmark-form';
-import { db } from '@/lib/db';
+import { getGroupsForUserWithBookmarksCount } from "@/app/groups/actions";
+import EditBookmarkForm from "@/components/edit-bookmark-form";
+import { db } from "@/lib/db";
 
 export default async function Page({ params }: { params: { id: string } }) {
+  const groups = await getGroupsForUserWithBookmarksCount();
   const bookmark = await db.bookmark.findUnique({
     where: {
       id: Number(params.id),
@@ -30,13 +32,13 @@ export default async function Page({ params }: { params: { id: string } }) {
           <img
             src={bookmark.image}
             alt="Bookmark image"
-            className="h-[150px] w-[150px] rounded-full"
+            className="size-[150px] rounded-full"
           />
         </div>
       ) : (
         <p>Coming soon: Add image</p>
       )}
-      <EditBookmarkForm bookmark={bookmark} />
+      <EditBookmarkForm bookmark={bookmark} groups={groups} />
     </section>
   );
 }

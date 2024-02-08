@@ -15,7 +15,7 @@ export default function BookmarkLayout({ children }: BookmarkLayoutProps) {
           href="/bookmarks"
           className={cn(buttonVariants({ variant: 'ghost' }))}
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
+          <ChevronLeft className="mr-2 size-4" />
           Bookmarks
         </Link>
       </div>

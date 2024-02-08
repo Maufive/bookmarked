@@ -48,7 +48,7 @@ export default function EditBookmarkForm({
 }: {
   bookmark: Bookmark;
   groups: Group[];
-  onClose: (open: boolean) => void;
+  onClose?: (open: boolean) => void;
 }) {
   const {
     register,
@@ -84,7 +84,7 @@ export default function EditBookmarkForm({
       });
     }
 
-    onClose(false);
+    onClose && onClose(false);
     router.refresh();
   };
 

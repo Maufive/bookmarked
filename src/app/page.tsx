@@ -31,7 +31,7 @@ export default async function Home() {
           )}
         >
           Get Started
-          <ChevronRight className="ml-2 h-4 w-4" />
+          <ChevronRight className="ml-2 size-4" />
         </Link>
       </div>
     </>
