@@ -10,98 +10,97 @@ datasource db {
 }
 
 model Account {
-  id                String   @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  id                String   @id(map: "idx_29163_primary") @default(cuid()) @db.VarChar(191)
+  userId            String   @db.VarChar(191)
+  type              String   @db.VarChar(191)
+  provider          String   @db.VarChar(191)
+  providerAccountId String   @db.VarChar(191)
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?  @db.Text
-  session_state     String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token_type        String?  @db.VarChar(191)
+  scope             String?  @db.VarChar(191)
+  id_token          String?
+  session_state     String?  @db.VarChar(191)
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @db.Timestamptz(6)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
-  @@map(name: "account")
+  @@map("account")
 }
 
 model Bookmark {
-  id          Int      @id @unique @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int      @id(map: "idx_29171_primary") @unique(map: "idx_29171_bookmarks_id_key") @default(autoincrement())
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
   name        String?  @db.VarChar(255)
-  url         String   @unique @db.VarChar(255)
+  url         String   @unique(map: "idx_29171_bookmarks_url_key") @db.VarChar(255)
   groupId     Int?
+  hostname    String
+  description String?
+  siteName    String?
+  image       String?
+  icon        String?
+  keywords    String?
   group       Group?   @relation(fields: [groupId], references: [id])
-  hostname    String   @db.Text
-  description String?  @db.Text
-  siteName    String?  @db.Text
-  image       String?  @db.Text
-  icon        String?  @db.Text
-  keywords    String?  @db.Text
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.VarChar(191)
 
   @@index([groupId, url])
   @@index([userId])
-  @@map(name: "bookmark")
+  @@map("bookmark")
 }
 
 model Group {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id        Int        @id(map: "idx_29179_primary") @default(autoincrement())
+  createdAt DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime   @updatedAt @db.Timestamptz(6)
   name      String     @db.VarChar(255)
   bookmarks Bookmark[]
-  color     String
+  color     String     @db.VarChar(191)
 
   User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  userId String? @db.VarChar(191)
 
   @@index([userId])
-  @@map(name: "group")
+  @@map("group")
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
+  id           String   @id(map: "idx_29186_primary") @default(cuid()) @db.VarChar(191)
+  sessionToken String   @unique(map: "idx_29186_sessions_sessiontoken_key") @db.VarChar(191)
+  userId       String   @db.VarChar(191)
+  expires      DateTime @db.Timestamptz(6)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@map(name: "session")
+  @@map("session")
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now())
+  id            String     @id(map: "idx_29191_primary") @default(cuid()) @db.VarChar(191)
+  name          String?    @db.VarChar(191)
+  email         String?    @unique(map: "idx_29191_users_email_key") @db.VarChar(191)
+  emailVerified DateTime?  @db.Timestamptz(6)
+  image         String?    @db.VarChar(191)
+  createdAt     DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime   @default(now()) @db.Timestamptz(6)
+  accounts      Account[]
+  sessions      Session[]
+  bookmarks     Bookmark[]
+  groups        Group[]
 
-  accounts  Account[]
-  sessions  Session[]
-  bookmarks Bookmark[]
-  groups    Group[]
-
-  @@map(name: "user")
+  @@map("user")
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+  identifier String   @db.VarChar(191)
+  token      String   @unique @db.VarChar(191)
+  expires    DateTime @db.Timestamptz(6)
 
   @@unique([identifier, token])
-  @@map(name: "verification_token")
+  @@map("verification_token")
 }
