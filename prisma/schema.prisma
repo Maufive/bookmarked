@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
   relationMode = "prisma"
 }
 
@@ -21,51 +22,14 @@ model Account {
   scope             String?
   id_token          String?  @db.Text
   session_state     String?
-  createdAt         DateTime @default(now()) @map(name: "created_at")
-  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
-  @@map(name: "accounts")
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@map(name: "sessions")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
-
-  accounts  Account[]
-  sessions  Session[]
-  bookmarks Bookmark[]
-  groups    Group[]
-
-  @@map(name: "users")
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-  @@map(name: "verification_tokens")
+  @@map(name: "account")
 }
 
 model Bookmark {
@@ -87,7 +51,7 @@ model Bookmark {
 
   @@index([groupId, url])
   @@index([userId])
-  @@map(name: "bookmarks")
+  @@map(name: "bookmark")
 }
 
 model Group {
@@ -102,5 +66,42 @@ model Group {
   userId String?
 
   @@index([userId])
-  @@map(name: "groups")
+  @@map(name: "group")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map(name: "session")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+
+  accounts  Account[]
+  sessions  Session[]
+  bookmarks Bookmark[]
+  groups    Group[]
+
+  @@map(name: "user")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map(name: "verification_token")
 }
