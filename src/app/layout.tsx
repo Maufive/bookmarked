@@ -23,12 +23,6 @@ export default async function RootLayout({
 }) {
   const user = await getCurrentUser();
 
-  const groups = await db.group.findMany({
-    include: {
-      _count: { select: { bookmarks: true } },
-    },
-  });
-
   const totalBookmarksCount = await db.bookmark.count({
     where: { userId: user?.id },
   });

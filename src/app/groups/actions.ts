@@ -29,6 +29,11 @@ export async function getGroupsForUserWithBookmarksCount(): Promise<
   GroupWithBookmarksCount[]
 > {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return [];
+  }
+
   const groups = await db.group.findMany({
     where: {
       userId: user?.id,
